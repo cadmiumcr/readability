@@ -1,0 +1,14 @@
+name: cadmium_readability
+version: 0.1.0
+
+authors:
+  - Chris Watson <cawatson1993@gmail.com>
+
+dependencies:
+  cadmium_util:
+    github: cadmiumcr/utilities
+    branch: master
+
+crystal: 0.30.1
+
+license: MIT
