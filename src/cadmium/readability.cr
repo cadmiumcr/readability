@@ -9,11 +9,13 @@ module Cadmium
     getter sentences : Array(String)
     getter words : Array(String)
     getter frequencies : Hash(String, Int32)
+    language : Symbol
 
     # The constructor accepts the text to be analysed, and returns a report
     # object which gives access to the
-    def initialize(text)
+    def initialize(text, language = :en)
       @text = text.dup
+      @language = language
       @paragraphs = Cadmium::Util::Paragraph.paragraphs(@text)
       @sentences = Cadmium::Util::Sentence.sentences(@text)
       @words = [] of String
@@ -205,10 +207,8 @@ module Cadmium
     end
 
     private def count_words
-      @text.scan(/\b([a-z][a-z\-']*)\b/i).each do |match|
-        word = match[0]
-        @words << word
-
+      @words = Cadmium::Tokenizer::Aggressive.new(lang: @language).tokenize(@text)
+      @words.each do |word|
         # up frequency counts
         @frequencies.has_key?(word) ? (@frequencies[word] += 1) : (@frequencies[word] = 1)
 

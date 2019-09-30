@@ -8,6 +8,8 @@ dependencies:
   cadmium_util:
     github: cadmiumcr/utilities
     branch: master
+  cadmium_tokenizer:
+    github: cadmiumcr/tokenizer
 
 crystal: 0.30.1
 

@@ -1,4 +1,5 @@
 require "./cadmium/readability"
+require "cadmium_tokenizer"
 
 # TODO: Write documentation for `CadmiumReadability`
 module Cadmium
