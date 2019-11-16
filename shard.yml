@@ -5,12 +5,9 @@ authors:
   - Chris Watson <cawatson1993@gmail.com>
 
 dependencies:
-  cadmium_util:
-    github: cadmiumcr/utilities
-    branch: master
   cadmium_tokenizer:
     github: cadmiumcr/tokenizer
 
-crystal: 0.30.1
+crystal: 0.31.1
 
 license: MIT

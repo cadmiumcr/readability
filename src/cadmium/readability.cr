@@ -17,7 +17,7 @@ module Cadmium
       @text = text.dup
       @language = language
       @paragraphs = Cadmium::Util::Paragraph.paragraphs(@text)
-      @sentences = Cadmium::Util::Sentence.sentences(@text)
+      @sentences = @text.tokenize(Tokenizer::Sentence)
       @words = [] of String
       @frequencies = {} of String => Int32
       @frequencies["default"] = 0
@@ -34,7 +34,7 @@ module Cadmium
     end
 
     # The number of sentences in the sample. The meaning of a "sentence" is
-    # defined by Cadmium::Util::Sentence.
+    # defined by Cadmium::Tokenizer::Sentence.
     def num_sentences
       sentences.size
     end
@@ -207,7 +207,7 @@ module Cadmium
     end
 
     private def count_words
-      @words = Cadmium::Tokenizer::Aggressive.new(lang: @language).tokenize(@text)
+      @words = Tokenizer::Aggressive.new(lang: @language).tokenize(@text)
       @words.each do |word|
         # up frequency counts
         @frequencies.has_key?(word) ? (@frequencies[word] += 1) : (@frequencies[word] = 1)
