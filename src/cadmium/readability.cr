@@ -27,7 +27,6 @@ module Cadmium
       getter percent_fog_complex_words : Float32
 
       def initialize(text : String, word_tokenizer = Tokenizer::Aggressive.new(lang: :en), sentence_tokenizer = Tokenizer::Sentence.new)
-        # def initialize(text : String, word_tokenizer = Tokenizer::Pragmatic.new, sentence_tokenizer = Tokenizer::Sentence.new)
         words = word_tokenizer.tokenize(text)
         sentences = sentence_tokenizer.tokenize(text)
         paragraphs = Cadmium::Util::Paragraph.paragraphs(text)
@@ -201,8 +200,8 @@ module Cadmium
       getter statistics : Statistics
       getter grade_levels : GradeLevels
       getter scores : Scores
-      getter reading_time : Int32
-      getter speaking_time : Int32 # in seconds 200 wpm
+      getter reading_time : Int32  # In minutes
+      getter speaking_time : Int32 # In minutes
 
       def initialize(text : String, word_tokenizer = Tokenizer::Aggressive.new, sentence_tokenizer = Tokenizer::Sentence.new)
         @statistics = Statistics.new(text, word_tokenizer, sentence_tokenizer)
