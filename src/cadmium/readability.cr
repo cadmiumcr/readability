@@ -2,7 +2,7 @@ require "cadmium_util"
 
 module Cadmium
   module Readability
-    VERSION = "1.0"
+    VERSION = "0.9.0"
 
     struct Statistics
       getter number_of_words : Int32
@@ -32,10 +32,10 @@ module Cadmium
         @number_of_words = words.size
         @number_of_sentences = sentences.size
         @number_of_paragraphs = paragraphs.size
+        @number_of_characters = text.size
         @average_number_of_words_per_sentence = (@number_of_words / @number_of_sentences).to_f32
         @number_of_sentences_per_hundred_words = (@number_of_sentences / (@number_of_words / 100)).to_f32
         @number_of_syllables = 0
-        @number_of_characters = 0
         @number_of_long_words = 0
         @number_of_unique_words = 0
         @number_of_complex_words = 0
@@ -47,7 +47,7 @@ module Cadmium
           @frequencies.has_key?(word) ? (@frequencies[word] += 1) : (@frequencies[word] = 1)
           # character counts
           characters = word.size
-          @number_of_characters += characters
+
           if characters > 6
             @number_of_long_words += 1 # for LIX Index
           end
@@ -67,7 +67,8 @@ module Cadmium
     end
 
     struct GradeLevels
-      getter flesch_kincaid : Float32
+      getter flesch : Float32
+      getter kincaid : Float32
       getter gunning_fog : Float32
       getter smog : Float32
       getter ari : Float32
@@ -80,7 +81,8 @@ module Cadmium
       # getter fry : Float32
 
       def initialize(statistics : Statistics)
-        @flesch_kincaid = kincaid(statistics.average_number_of_syllables_per_word, statistics.average_number_of_words_per_sentence)
+        @flesch = flesch(statistics.average_number_of_words_per_sentence, statistics.average_number_of_syllables_per_word)
+        @kincaid = kincaid(statistics.average_number_of_syllables_per_word, statistics.average_number_of_words_per_sentence)
         @gunning_fog = fog(statistics.average_number_of_words_per_sentence, statistics.percent_fog_complex_words)
         @smog = smog(statistics.number_of_sentences, statistics.number_of_complex_words)
         @ari = ari(statistics.average_number_of_characters_per_word, statistics.average_number_of_words_per_sentence)
@@ -197,12 +199,12 @@ module Cadmium
       getter reading_time : Int32
       getter speaking_time : Int32 # in seconds 200 wpm
 
-      def initialize(text : String, word_tokenizer = Tokenizer::Pragmatic.new, sentence_tokenizer = Tokenizer::Sentence.new)
+      def initialize(text : String, word_tokenizer = Tokenizer::Aggressive.new, sentence_tokenizer = Tokenizer::Sentence.new)
         @statistics = Statistics.new(text, word_tokenizer, sentence_tokenizer)
         @grade_levels = GradeLevels.new(@statistics)
         @scores = Scores.new(@statistics)
         @reading_time = (@statistics.number_of_words / 200).to_i
-        @speaking_time = (@statistics.number_of_words / 200).to_i
+        @speaking_time = (@statistics.number_of_words / 150).to_i
       end
     end
   end
