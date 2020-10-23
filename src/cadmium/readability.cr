@@ -1,10 +1,12 @@
 require "cadmium_util"
+require "json"
 
 module Cadmium
   module Readability
     VERSION = "0.9.0"
 
     struct Statistics
+      include JSON::Serializable
       getter number_of_words : Int32
       getter number_of_sentences : Int32
       getter number_of_paragraphs : Int32
@@ -67,6 +69,7 @@ module Cadmium
     end
 
     struct GradeLevels
+      include JSON::Serializable
       getter flesch : Float32
       getter kincaid : Float32
       getter gunning_fog : Float32
@@ -155,6 +158,7 @@ module Cadmium
     end
 
     struct Scores
+      include JSON::Serializable
       # getter spache : Float32
       # getter new_dale_chall : Float32
       getter lix : Float32
@@ -193,6 +197,7 @@ module Cadmium
     end
 
     struct Report
+      include JSON::Serializable
       getter statistics : Statistics
       getter grade_levels : GradeLevels
       getter scores : Scores
