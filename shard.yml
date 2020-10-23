@@ -1,13 +1,14 @@
 name: cadmium_readability
-version: 0.1.0
+version: 0.2.0
 
 authors:
   - Chris Watson <cawatson1993@gmail.com>
+  - Rémy Marronnier <rmarronnier@gmail.com>
 
 dependencies:
   cadmium_tokenizer:
     github: cadmiumcr/tokenizer
 
-crystal: 0.31.1
+crystal: 0.35.1
 
 license: MIT
