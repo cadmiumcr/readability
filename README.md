@@ -26,11 +26,11 @@ text = <<-EOF
     Make sure that the trip is exactly what she wants. Then on the wedding night tell her about the adventure so that the needed accommodations can be made.
 EOF
 
-report = Cadmium.readability.new(text)
+report = Cadmium::Readability.report.new(text)
 
-puts report.flesch  # => 71.47176470588238
-puts report.fog     # => 10.721568627450981
-puts report.kincaid # => 7.513725490196077
+puts report.grade_levels.flesch  # => 71.47176470588238
+puts report.grade_levels.gunning_fog     # => 10.721568627450981
+puts report.grade_levels.kincaid # => 7.513725490196077
 ```
 
 ## Contributing
@@ -44,3 +44,4 @@ puts report.kincaid # => 7.513725490196077
 ## Contributors
 
 - [Chris Watson](https://github.com/cadmiumcr) - creator and maintainer
+- [Rémy Marronnier](https://github.com/cadmiumcr) - core contributor

@@ -31,110 +31,137 @@ describe Cadmium::Readability do
 
   random_text = "vs/5d s/*gf '/'g 5*/ b5/*"
 
-  long_subject = Cadmium::Readability.new(long_text)
-  short_subject = Cadmium::Readability.new(short_text)
-  random_subject = Cadmium::Readability.new(random_text)
+  long_subject = Cadmium::Readability::Report.new(long_text)
+  short_subject = Cadmium::Readability::Report.new(short_text)
+  random_subject = Cadmium::Readability::Report.new(random_text)
 
   results =
     {
       "long" => {
-        "Number of paragraphs"        => 12,
-        "Number of sentences"         => 37,
-        "Number of words"             => 1307,
-        "Number of characters"        => 7738,
-        "Average words per sentence"  => 35.32432432432432,
-        "Average syllables per word"  => 1.5952563121652639,
-        "Flesch score"                => 36.02,
-        "Flesch-Kincaid grade level"  => 17.01,
-        "Fog Index"                   => 20.99,
-        "SMOG grade level"            => 17.18530501627162,
-        "Automated Readability Index" => 24.12,
-        "Coleman-Liau Index"          => 18.17,
-        "LIX Index"                   => 59.5,
-        "Linsear Write Index"         => 23.715,
+        "Statistics" => {
+          "Number of paragraphs"       => 12,
+          "Number of sentences"        => 37,
+          "Number of words"            => 1307,
+          "Number of characters"       => 7738,
+          "Average words per sentence" => 35.324326_f32,
+          "Average syllables per word" => 1.5952563_f32,
+        },
+        "Scores" => {
+          "lix"           => 59.5_f32,
+          "linsear_write" => 23.715_f32,
+        },
+        "Grade_levels" => {
+          "kincaid"      => 17.01_f32,
+          "gunning_fog"  => 20.99_f32,
+          "smog"         => 17.185305_f32,
+          "ari"          => 24.12_f32,
+          "coleman_liau" => 18.17_f32,
+        }, # ,
+        # "reading_time"  => 12,
+        # "speaking_time" => 12,
       },
       "short" => {
-        "Number of paragraphs"        => 5,
-        "Number of sentences"         => 11,
-        "Number of words"             => 273,
-        "Number of characters"        => 1484,
-        "Average words per sentence"  => 24.818181818181817,
-        "Average syllables per word"  => 1.4615384615384615,
-        "Flesch score"                => 58.0,
-        "Flesch-Kincaid grade level"  => 11.34,
-        "Fog Index"                   => 14.91,
-        "SMOG grade level"            => 0.00,
-        "Automated Readability Index" => 16.58,
-        "Coleman-Liau Index"          => 14.97,
-        "LIX Index"                   => 45.7,
-        "Linsear Write Index"         => 15.5,
+        "Statistics" => {
+          "Number of paragraphs"       => 5,
+          "Number of sentences"        => 11,
+          "Number of words"            => 273,
+          "Number of characters"       => 1484,
+          "Average words per sentence" => 24.818182_f32,
+          "Average syllables per word" => 1.4615384_f32,
+        },
+        "Scores" => {
+          "lix"           => 45.7_f32,
+          "linsear_write" => 15.5_f32,
+        },
+        "Grade_levels" => {
+          "kincaid"      => 11.34_f32,
+          "gunning_fog"  => 14.91_f32,
+          "smog"         => 0_f32,
+          "ari"          => 16.58_f32,
+          "coleman_liau" => 14.97_f32,
+        },
+        # "reading_time"  => 12,
+        # "speaking_time" => 12,
       },
       "random" => {
-        "Number of paragraphs"        => 1,
-        "Number of sentences"         => 1,
-        "Number of words"             => 7,
-        "Number of characters"        => 25,
-        "Average words per sentence"  => 7.00,
-        "Average syllables per word"  => 1.00,
-        "Flesch score"                => 115.13,
-        "Flesch-Kincaid grade level"  => -1.06,
-        "Fog Index"                   => 2.8,
-        "SMOG grade level"            => 0.00,
-        "Automated Readability Index" => -1.11,
-        "Coleman-Liau Index"          => 0.00,
-        "LIX Index"                   => 7.0,
-        "Linsear Write Index"         => 0.00,
+        "Statistics" => {
+          "Number of paragraphs"       => 1,
+          "Number of sentences"        => 1,
+          "Number of words"            => 7,
+          "Number of characters"       => 25,
+          "Average words per sentence" => 7.0_f32,
+          "Average syllables per word" => 1.0_f32,
+        },
+        "Scores" => {
+          "lix"           => 7.0_f32,
+          "linsear_write" => 0.0_f32,
+        },
+        "Grade_levels" => {
+          "kincaid"      => -1.06_f32,
+          "gunning_fog"  => 2.8_f32,
+          "smog"         => 0.00_f32,
+          "ari"          => -1.11_f32,
+          "coleman_liau" => 0.00_f32,
+        },
+        # "reading_time"  => 12,
+        # "speaking_time" => 12,
       },
     }
 
   it "should calculate correct values for all metrics when all test requirements are met" do
-    long_subject.num_paragraphs.should eq(results["long"]["Number of paragraphs"])
-    long_subject.num_sentences.should eq(results["long"]["Number of sentences"])
-    long_subject.num_words.should eq(results["long"]["Number of words"])
-    long_subject.num_chars.should eq(results["long"]["Number of characters"])
-    long_subject.words_per_sentence.should eq(results["long"]["Average words per sentence"])
-    long_subject.syllables_per_word.should eq(results["long"]["Average syllables per word"])
-    long_subject.flesch.should eq(results["long"]["Flesch score"])
-    long_subject.kincaid.should eq(results["long"]["Flesch-Kincaid grade level"])
-    long_subject.fog.should eq(results["long"]["Fog Index"])
-    long_subject.smog.should eq(results["long"]["SMOG grade level"])
-    long_subject.ari.should eq(results["long"]["Automated Readability Index"])
-    long_subject.coleman_liau.should eq(results["long"]["Coleman-Liau Index"])
-    long_subject.lix.should eq(results["long"]["LIX Index"])
-    long_subject.linsear_write.should eq(results["long"]["Linsear Write Index"])
+    long_subject.statistics.number_of_paragraphs.should eq(results["long"]["Statistics"]["Number of paragraphs"])
+    long_subject.statistics.number_of_sentences.should eq(results["long"]["Statistics"]["Number of sentences"])
+    long_subject.statistics.number_of_words.should eq(results["long"]["Statistics"]["Number of words"])
+    long_subject.statistics.number_of_characters.should eq(results["long"]["Statistics"]["Number of characters"])
+    long_subject.statistics.average_number_of_words_per_sentence.should eq(results["long"]["Statistics"]["Average words per sentence"])
+    long_subject.statistics.average_number_of_syllables_per_word.should eq(results["long"]["Statistics"]["Average syllables per word"])
+
+    long_subject.scores.lix.should eq(results["long"]["Scores"]["lix"])
+    long_subject.scores.linsear_write.should eq(results["long"]["Scores"]["linsear_write"])
+
+    long_subject.grade_levels.kincaid.should eq(results["long"]["Grade_levels"]["kincaid"])
+    long_subject.grade_levels.gunning_fog.should eq(results["long"]["Grade_levels"]["gunning_fog"])
+    long_subject.grade_levels.smog.should eq(results["long"]["Grade_levels"]["smog"])
+    long_subject.grade_levels.ari.should eq(results["long"]["Grade_levels"]["ari"])
+    long_subject.grade_levels.coleman_liau.should eq(results["long"]["Grade_levels"]["coleman_liau"])
+
+    # long_subject.reading_time.should eq(results["long"]["reading_time"])
+    # long_subject.speaking_time.should eq(results["long"]["speaking_time"])
   end
 
   it "should calculate correct values for applicable tests for a short text or return 0.0 when the test requirements are not met" do
-    short_subject.num_paragraphs.should eq(results["short"]["Number of paragraphs"])
-    short_subject.num_sentences.should eq(results["short"]["Number of sentences"])
-    short_subject.num_words.should eq(results["short"]["Number of words"])
-    short_subject.num_chars.should eq(results["short"]["Number of characters"])
-    short_subject.words_per_sentence.should eq(results["short"]["Average words per sentence"])
-    short_subject.syllables_per_word.should eq(results["short"]["Average syllables per word"])
-    short_subject.flesch.should eq(results["short"]["Flesch score"])
-    short_subject.kincaid.should eq(results["short"]["Flesch-Kincaid grade level"])
-    short_subject.fog.should eq(results["short"]["Fog Index"])
-    short_subject.smog.should eq(results["short"]["SMOG grade level"])
-    short_subject.ari.should eq(results["short"]["Automated Readability Index"])
-    short_subject.coleman_liau.should eq(results["short"]["Coleman-Liau Index"])
-    short_subject.lix.should eq(results["short"]["LIX Index"])
-    short_subject.linsear_write.should eq(results["short"]["Linsear Write Index"])
+    short_subject.statistics.number_of_paragraphs.should eq(results["short"]["Statistics"]["Number of paragraphs"])
+    short_subject.statistics.number_of_sentences.should eq(results["short"]["Statistics"]["Number of sentences"])
+    short_subject.statistics.number_of_words.should eq(results["short"]["Statistics"]["Number of words"])
+    short_subject.statistics.number_of_characters.should eq(results["short"]["Statistics"]["Number of characters"])
+    short_subject.statistics.average_number_of_words_per_sentence.should eq(results["short"]["Statistics"]["Average words per sentence"])
+    short_subject.statistics.average_number_of_syllables_per_word.should eq(results["short"]["Statistics"]["Average syllables per word"])
+
+    short_subject.scores.lix.should eq(results["short"]["Scores"]["lix"])
+    short_subject.scores.linsear_write.should eq(results["short"]["Scores"]["linsear_write"])
+
+    short_subject.grade_levels.kincaid.should eq(results["short"]["Grade_levels"]["kincaid"])
+    short_subject.grade_levels.gunning_fog.should eq(results["short"]["Grade_levels"]["gunning_fog"])
+    short_subject.grade_levels.smog.should eq(results["short"]["Grade_levels"]["smog"])
+    short_subject.grade_levels.ari.should eq(results["short"]["Grade_levels"]["ari"])
+    short_subject.grade_levels.coleman_liau.should eq(results["short"]["Grade_levels"]["coleman_liau"])
   end
 
   it "should return 0.0 instead of infinite or NaN values when analysing random characters" do
-    random_subject.num_paragraphs.should eq(results["random"]["Number of paragraphs"])
-    random_subject.num_sentences.should eq(results["random"]["Number of sentences"])
-    random_subject.num_words.should eq(results["random"]["Number of words"])
-    random_subject.num_chars.should eq(results["random"]["Number of characters"])
-    random_subject.words_per_sentence.should eq(results["random"]["Average words per sentence"])
-    random_subject.syllables_per_word.should eq(results["random"]["Average syllables per word"])
-    random_subject.flesch.should eq(results["random"]["Flesch score"])
-    random_subject.kincaid.should eq(results["random"]["Flesch-Kincaid grade level"])
-    random_subject.fog.should eq(results["random"]["Fog Index"])
-    random_subject.smog.should eq(results["random"]["SMOG grade level"])
-    random_subject.ari.should eq(results["random"]["Automated Readability Index"])
-    random_subject.coleman_liau.should eq(results["random"]["Coleman-Liau Index"])
-    random_subject.lix.should eq(results["random"]["LIX Index"])
-    random_subject.linsear_write.should eq(results["random"]["Linsear Write Index"])
+    random_subject.statistics.number_of_paragraphs.should eq(results["random"]["Statistics"]["Number of paragraphs"])
+    random_subject.statistics.number_of_sentences.should eq(results["random"]["Statistics"]["Number of sentences"])
+    random_subject.statistics.number_of_words.should eq(results["random"]["Statistics"]["Number of words"])
+    random_subject.statistics.number_of_characters.should eq(results["random"]["Statistics"]["Number of characters"])
+    random_subject.statistics.average_number_of_words_per_sentence.should eq(results["random"]["Statistics"]["Average words per sentence"])
+    random_subject.statistics.average_number_of_syllables_per_word.should eq(results["random"]["Statistics"]["Average syllables per word"])
+
+    random_subject.scores.lix.should eq(results["random"]["Scores"]["lix"])
+    random_subject.scores.linsear_write.should eq(results["random"]["Scores"]["linsear_write"])
+
+    random_subject.grade_levels.kincaid.should eq(results["random"]["Grade_levels"]["kincaid"])
+    random_subject.grade_levels.gunning_fog.should eq(results["random"]["Grade_levels"]["gunning_fog"])
+    random_subject.grade_levels.smog.should eq(results["random"]["Grade_levels"]["smog"])
+    random_subject.grade_levels.ari.should eq(results["random"]["Grade_levels"]["ari"])
+    random_subject.grade_levels.coleman_liau.should eq(results["random"]["Grade_levels"]["coleman_liau"])
   end
 end
